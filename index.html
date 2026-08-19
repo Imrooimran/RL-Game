@@ -5,7 +5,7 @@
 <title>Debris Field — Rocketlane</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg-deep:#04060a;
@@ -21,7 +21,8 @@
     --dimmer:#4d5468;
   }
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;height:100%;background:var(--bg-deep);font-family:'Space Grotesk',sans-serif;color:var(--white);overflow:hidden;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;background:var(--bg-deep);font-family:'Oxanium',sans-serif;color:var(--white);overflow:hidden;-webkit-tap-highlight-color:transparent;}
+  button,input{font-family:'Oxanium',sans-serif!important}.hud,.hint,.eyebrow,.intro-code,.form-sub,.rule-name,.photo-note,.mission-chips span,.lb-title,.rank-tag,.winner-rank,.winner-score{font-family:'Press Start 2P',monospace!important;letter-spacing:.04em!important;}
   #stage{position:relative;width:100%;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;
     background:radial-gradient(120% 100% at 50% 0%, #0c1224 0%, #05070c 55%, #020306 100%);}
   #frame{position:relative;width:min(100vw,1200px);height:min(100vh,700px);background:var(--bg-panel);
@@ -49,46 +50,50 @@
   .bracket.bl{bottom:10px;left:10px;border-bottom:2px solid;border-left:2px solid;}
   .bracket.br{bottom:10px;right:10px;border-bottom:2px solid;border-right:2px solid;}
 
-  /* ---- Rocketlane logo mark (recreated approximation — swap in the real asset for production) ---- */
+  /* Rocketlane double-chevron lockup */
   .rl-logo{display:flex;align-items:center;gap:9px;justify-content:center;}
-  .rl-logo .mark{position:relative;width:26px;height:22px;flex:none;}
-  .rl-logo .mark i{position:absolute;top:0;width:14px;height:22px;
-    clip-path:polygon(0 0, 55% 0, 100% 50%, 55% 100%, 0 100%, 45% 50%);}
-  .rl-logo .mark i.c1{left:0;background:linear-gradient(180deg,#7fa1ff,var(--blue));}
-  .rl-logo .mark i.c2{left:9px;background:linear-gradient(180deg,var(--blue),#1b3fb8);opacity:.9;}
+  .rl-logo .official-mark{width:30px;height:24px;display:block;flex:none;}
   .rl-logo .word{font-weight:700;font-size:17px;letter-spacing:-.01em;color:var(--white);}
   .rl-logo .word b{color:var(--blue-soft);font-weight:700;}
   .rl-watermark{position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:6;opacity:.85;pointer-events:none;}
   .rl-watermark .rl-logo .word{font-size:12px;}
-  .rl-watermark .rl-logo .mark{width:17px;height:15px;}
-  .rl-watermark .rl-logo .mark i{width:9px;height:15px;}
-  .rl-watermark .rl-logo .mark i.c2{left:6px;}
+  .rl-watermark .rl-logo .official-mark{width:20px;height:16px;}
 
   .hud{position:absolute;z-index:6;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;
     color:var(--dim);pointer-events:none;text-transform:uppercase;line-height:1.5;}
   .hud .panel{background:rgba(10,14,26,.55);border:1px solid #1e2846;border-radius:10px;padding:8px 12px;backdrop-filter:blur(6px);}
   .hud b{display:block;font-size:16px;letter-spacing:0;color:var(--white);font-weight:600;margin-top:2px;}
-  .hud.top-left{top:52px;left:16px;}
+  .hud.top-left{top:82px;left:16px;}
   .hud.top-right{top:52px;right:16px;text-align:right;}
   .hud.top-right b{color:var(--gold);}
   .hud.bottom-left{top:140px;left:16px;}
-  .hud.bottom-right{top:140px;right:16px;text-align:right;}
+  .hud.bottom-right{top:50%;right:16px;transform:translateY(-50%);text-align:center;}
 
-  .pilot-chip{position:absolute;top:14px;right:16px;z-index:6;display:flex;align-items:center;gap:6px;
-    background:rgba(10,14,26,.6);border:1px solid #1e2846;border-radius:20px;padding:4px 10px 4px 4px;
+  .pilot-chip{position:absolute;top:14px;left:16px;z-index:6;display:flex;align-items:center;gap:9px;
+    background:rgba(10,14,26,.78);border:1px solid rgba(94,234,212,.4);border-radius:16px;padding:6px 12px 6px 6px;
     font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);backdrop-filter:blur(6px);}
-  .pilot-chip .av{width:20px;height:20px;border-radius:50%;background:#141b30;display:flex;align-items:center;justify-content:center;font-size:12px;overflow:hidden;}
+  .pilot-chip .av{width:42px;height:42px;border-radius:12px;background:#141b30;display:flex;align-items:center;justify-content:center;font-size:20px;overflow:hidden;border:2px solid var(--cyan);}
   .pilot-chip .av img{width:100%;height:100%;object-fit:cover;}
-  .pilot-chip span{color:var(--white);letter-spacing:.02em;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .pilot-chip span{color:var(--white);letter-spacing:.02em;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:700;}
+  .pilot-meta{display:flex;flex-direction:column;align-items:flex-start;gap:4px}.lives{display:flex;gap:4px;font-size:12px}.life.off{filter:grayscale(1);opacity:.2}
 
-  .pilot-photo-section{width:180px;background:#0d1220;border:2px dashed rgba(94,234,212,.5);border-radius:12px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:10px;flex:none;}
-  .pilot-photo-frame{width:152px;height:152px;background:#141b30;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;}
+  .pilot-photo-section{width:255px;min-height:340px;background:linear-gradient(155deg,#351759 0%,#121b47 50%,#062738 100%);border:1px solid rgba(126,244,255,.78);border-radius:28px;padding:22px 18px 18px;display:flex;flex-direction:column;align-items:center;gap:11px;flex:none;position:relative;overflow:hidden;box-shadow:0 0 0 1px rgba(255,61,218,.22) inset,0 24px 60px rgba(0,0,0,.48),0 0 42px rgba(60,224,255,.16);}
+  .pilot-photo-section::before{content:'';position:absolute;inset:-35%;background:conic-gradient(from 90deg,transparent,rgba(255,61,218,.16),transparent,rgba(43,243,255,.16),transparent);animation:ringSpin 12s linear infinite;}
+  .pilot-photo-section::after{content:'';position:absolute;inset:7px;border:1px solid rgba(255,255,255,.11);border-radius:18px;pointer-events:none;}
+  .pilot-photo-section>*{position:relative;z-index:1;}
+  .winner-kicker{font:700 8px 'IBM Plex Mono',monospace;letter-spacing:.22em;color:#8ffcff;text-transform:uppercase;}
+  .winner-crown{font-size:34px;line-height:1;filter:drop-shadow(0 0 12px rgba(255,209,102,.7));}
+  .pilot-photo-frame{width:154px;height:154px;background:#141b30;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;border:5px solid #ffd166;box-shadow:0 0 0 5px rgba(255,209,102,.12),0 0 34px rgba(255,209,102,.42);}
   .pilot-photo-frame img{width:100%;height:100%;object-fit:cover;}
   .pilot-photo-frame.empty{color:var(--dim);font-size:9px;text-align:center;padding:8px;}
+  .winner-name{font-size:26px;font-weight:800;line-height:1;max-width:210px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .winner-rank{font:800 12px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#07111b;background:linear-gradient(90deg,#ffd166,#fff1b8);padding:7px 12px;border-radius:999px;text-transform:uppercase;box-shadow:0 6px 18px rgba(255,209,102,.25);}
+  .winner-score{font:700 10px 'IBM Plex Mono',monospace;color:#8ffcff;letter-spacing:.08em;text-transform:uppercase;}
+  .pilot-photo-section.standard{border-color:rgba(127,161,255,.45);background:linear-gradient(155deg,#171d3b,#0c1226);}.pilot-photo-section.standard .winner-crown{filter:none}.pilot-photo-section.standard .pilot-photo-frame{border-color:#7fa1ff;box-shadow:0 0 0 4px rgba(127,161,255,.1),0 0 24px rgba(47,107,255,.25)}.pilot-photo-section.standard .winner-rank{background:linear-gradient(90deg,#7fa1ff,#5eead4)}
   .photo-capture-btn{appearance:none;border:none;background:rgba(94,234,212,.2);border:1px solid rgba(94,234,212,.6);cursor:pointer;color:var(--cyan);font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:5px;transition:background .15s,border-color .15s;white-space:nowrap;}
   .photo-capture-btn:hover{background:rgba(94,234,212,.35);border-color:rgba(94,234,212,.9);}
   .photo-capture-input{display:none;}
-  .end-content-wrap{display:flex;gap:20px;align-items:flex-start;width:100%;max-width:500px;margin:0 auto;}
+  .end-content-wrap{display:flex;gap:24px;align-items:stretch;width:100%;max-width:950px;margin:0 auto;}
 
   .shields{display:flex;gap:5px;margin-top:4px;}
   .shields.top-right{justify-content:flex-end;}
@@ -96,6 +101,10 @@
   .shield-dot.off{background:#1b2440;box-shadow:none;}
   .velbar{width:88px;height:5px;background:#1b2440;border-radius:3px;margin-top:6px;overflow:hidden;}
   .velbar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--cyan),var(--blue));transition:width .12s linear;}
+  .fuelbar{width:14px;height:150px;background:#24121d;border-radius:8px;margin:7px auto 0;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.12);}
+  .fuelbar-fill{position:absolute;bottom:0;left:0;width:100%;height:100%;background:linear-gradient(0deg,#ff5a5f,#ffd166 48%,#5eead4);transition:height .12s linear;}
+  .fuel-rail .panel{padding:10px!important;width:84px}.fuel-rail b{font-size:11px!important}.fuel-rail .fuel-label{font-size:6px;margin:4px auto 6px;letter-spacing:.08em;line-height:1.45}.fuel-rail .fuel-mini-logo{display:flex;align-items:center;justify-content:center;margin-bottom:5px}.fuel-rail .fuel-mini-logo .official-mark{width:25px;height:20px}.fuel-rail #levelReadout{white-space:nowrap;font-size:7px}
+  .nitro-status{color:var(--cyan)!important;text-shadow:0 0 12px rgba(94,234,212,.75);}
 
   .overlay{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
     text-align:center;padding:28px;background:linear-gradient(180deg, rgba(4,6,10,.7), rgba(4,6,10,.95) 55%);backdrop-filter:blur(3px);
@@ -107,7 +116,8 @@
   h1{font-size:36px;font-weight:700;margin:0 0 10px;letter-spacing:-.01em;line-height:1.02;
     background:linear-gradient(180deg,#fff,#aebbe6);-webkit-background-clip:text;background-clip:text;color:transparent;}
   #endEyebrow{margin:8px 0 2px;}
-  #endTitle{font-size:26px;margin:2px 0 14px;}
+  #endTitle{font-size:36px;margin:4px 0 18px;}
+  #endScreen .overlay-inner{max-width:1050px;padding:4px 0 14px}#endScreen .eyebrow{margin-top:4px}#endScreen .trophy-icon{font-size:50px}
   #finalPhase{font-size:15px;line-height:1.15;word-break:break-word;}
   .sub{color:var(--dim);font-size:13.5px;max-width:320px;margin:0 auto 20px;line-height:1.55;}
   .sub em{color:var(--white);font-style:normal;font-weight:600;}
@@ -118,7 +128,30 @@
   input.nameInput{width:100%;background:#0d1220;border:1px solid #253055;border-radius:8px;color:var(--white);
     font-family:'Space Grotesk',sans-serif;font-size:15px;padding:11px 12px;outline:none;}
   input.nameInput:focus{border-color:var(--blue);}
+  input.nameInput:-webkit-autofill,input.nameInput:-webkit-autofill:hover,input.nameInput:-webkit-autofill:focus{-webkit-text-fill-color:#fff;-webkit-box-shadow:0 0 0 1000px #0d1220 inset;transition:background-color 9999s ease-out;}
   input.nameInput::placeholder{color:var(--dimmer);}
+  .player-setup{display:grid;grid-template-columns:1fr 104px;gap:12px;width:100%;max-width:380px;align-items:end;margin-bottom:8px;}
+  .player-setup .field-group{margin:0;}
+  .selfie-pick{width:104px;height:78px;border-radius:16px;border:1.5px dashed rgba(94,234,212,.75);background:linear-gradient(145deg,rgba(124,108,255,.28),rgba(94,234,212,.14));color:var(--cyan);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;font:700 8px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;box-shadow:inset 0 0 22px rgba(94,234,212,.1),0 0 18px rgba(94,234,212,.08);}
+  .selfie-pick img{width:100%;height:100%;object-fit:cover;}
+  .selfie-pick .cam{font-size:25px;line-height:1.2;}.photo-note{grid-column:1/-1;font:500 8px 'IBM Plex Mono',monospace;color:var(--dimmer);letter-spacing:.06em;text-align:right;margin-top:-6px}.photo-note.error{color:#ff7f91;text-shadow:0 0 10px rgba(255,90,95,.45)}
+  .mission-chips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;max-width:390px;margin:-8px 0 16px;}
+  .mission-chips span{font:600 8px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:#c8d8ff;border:1px solid rgba(127,161,255,.3);border-radius:999px;padding:5px 8px;background:rgba(47,107,255,.08);}
+  .intro-shell{width:min(520px,100%);display:grid;grid-template-columns:1fr;gap:0;align-items:stretch;text-align:left;}
+  .intro-copy,.intro-form{position:relative;border:1px solid rgba(127,161,255,.22);border-radius:22px;background:linear-gradient(150deg,rgba(17,24,52,.88),rgba(7,10,23,.9));padding:24px;overflow:hidden;box-shadow:inset 0 0 36px rgba(47,107,255,.06),0 22px 50px rgba(0,0,0,.28);}
+  .intro-copy::before{content:'';position:absolute;width:270px;height:270px;border-radius:50%;right:-120px;top:-130px;background:conic-gradient(from 40deg,#ff3bd4,#6a4cff,#2ff3ff,#68ffb7,#ff3bd4);filter:blur(36px);opacity:.18;}
+  .intro-code{font:700 8px 'IBM Plex Mono',monospace;letter-spacing:.2em;color:#75f7e8;text-transform:uppercase;margin-bottom:10px;}
+  .game-title{font-size:48px;font-weight:800;letter-spacing:-.045em;line-height:.9;margin:0 0 15px;background:linear-gradient(110deg,#fff 18%,#77f7ff 52%,#b18aff 82%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 12px 55px rgba(47,107,255,.2);}
+  .game-title span{display:block;font:700 11px 'IBM Plex Mono',monospace;letter-spacing:.34em;color:#8c99b8;margin-top:13px;text-transform:uppercase;-webkit-text-fill-color:#8c99b8;}
+  .intro-copy .sub{max-width:none;margin:0 0 16px;font-size:13px;}
+  .mission-rules{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px;}
+  .rule-card{min-height:82px;border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:10px;background:rgba(6,9,23,.66);}
+  .rule-icon{font-size:20px;margin-bottom:6px}.rule-name{font:700 8px 'IBM Plex Mono',monospace;color:#fff;text-transform:uppercase;letter-spacing:.08em}.rule-desc{font-size:9px;color:var(--dim);line-height:1.3;margin-top:3px}
+  .intro-form{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-color:rgba(94,234,212,.28);padding:25px 30px;}
+  .form-title{font-size:19px;font-weight:750;margin-bottom:3px}.form-sub{font:500 8px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-bottom:14px}
+  .intro-form .player-setup{grid-template-columns:1fr 92px;max-width:100%;}.intro-form .selfie-pick{width:92px}.intro-form .field-group{max-width:none}
+  .intro-form .mission-chips{margin:7px 0 14px}.intro-form .playbtn{width:100%;padding:13px 18px}.intro-form .hint{margin-top:10px;text-align:center;line-height:1.4}
+  .intro-status{display:flex;gap:8px;width:100%;margin-bottom:12px}.intro-status span{flex:1;padding:6px 7px;border:1px solid rgba(94,234,212,.18);border-radius:8px;background:rgba(94,234,212,.05);font:600 7px 'IBM Plex Mono',monospace;letter-spacing:.08em;color:#9ffff1;text-transform:uppercase;text-align:center}
 
   .avatar-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;max-width:300px;}
   .avatar-opt{width:38px;height:38px;border-radius:50%;background:#0d1220;border:2px solid #253055;
@@ -155,31 +188,40 @@
     box-shadow:0 4px 16px -4px rgba(255,209,102,.6);font-weight:600;}
   .rank-tag.plain{color:var(--dim);background:#141b30;box-shadow:none;border:1px solid #253055;}
 
-  .stat-row{display:flex;gap:14px;margin-bottom:18px;}
+  .stat-row{display:flex;gap:14px;margin-bottom:14px;}
   .stat{text-align:center;flex:1;background:#0d1220;border:1px solid #1e2846;border-radius:12px;padding:12px 6px 10px;position:relative;overflow:hidden;}
   .stat.hero{border-color:rgba(255,209,102,.55);box-shadow:0 0 0 1px rgba(255,209,102,.15) inset, 0 8px 24px -10px rgba(255,209,102,.35);}
   .stat.hero::before{content:'';position:absolute;top:-30%;left:-30%;width:160%;height:160%;
     background:radial-gradient(circle, rgba(255,209,102,.16), transparent 60%);pointer-events:none;}
-  .stat .n{font-size:24px;font-weight:700;color:var(--white);position:relative;}
+  .stat .n{font-size:29px;font-weight:800;color:var(--white);position:relative;}
   .stat.hero .n{color:var(--gold);}
   .stat .l{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-top:4px;position:relative;}
   .flavor{font-size:12.5px;color:var(--dim);max-width:300px;line-height:1.6;margin-bottom:18px;}
   .flavor b{color:var(--cyan);}
 
-  .leaderboard{width:100%;max-width:300px;background:#0d1220;border:1px solid #1e2846;border-radius:10px;padding:10px 14px;margin-bottom:18px;}
+  .leaderboard{width:100%;max-width:560px;background:linear-gradient(160deg,rgba(15,20,42,.97),rgba(7,10,22,.97));border:1px solid rgba(94,234,212,.34);border-radius:20px;padding:16px 18px;margin-bottom:14px;box-shadow:inset 0 0 36px rgba(47,107,255,.08),0 20px 48px rgba(0,0,0,.3);}
   .leaderboard .lb-title{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;margin-bottom:8px;text-align:left;display:flex;align-items:center;gap:6px;}
-  .lb-row{display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:12.5px;border-top:1px solid #171f38;border-radius:6px;}
+  .lb-row{display:flex;align-items:center;gap:9px;padding:7px 5px;font-size:12.5px;border-top:1px solid #171f38;border-radius:8px;}
   .lb-row:first-child{border-top:none;}
   .lb-row.top1{background:linear-gradient(90deg, rgba(255,209,102,.14), transparent);}
   .lb-row .rank{width:18px;color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:12px;text-align:center;}
-  .lb-row .av{width:22px;height:22px;border-radius:50%;background:#141b30;display:flex;align-items:center;justify-content:center;font-size:12px;overflow:hidden;flex:none;}
+  .lb-row .av{width:34px;height:34px;border-radius:50%;background:#141b30;display:flex;align-items:center;justify-content:center;font-size:17px;overflow:hidden;flex:none;border:1px solid rgba(94,234,212,.35);}
   .lb-row .av img{width:100%;height:100%;object-fit:cover;}
   .lb-row .nm{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .lb-row .ds{color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:11px;}
   .lb-row.me{background:rgba(94,234,212,.1);box-shadow:0 0 0 1px rgba(94,234,212,.3) inset;}
   .lb-row.me .nm{color:var(--cyan);font-weight:600;}
+  .podium{display:grid;grid-template-columns:1fr 1.16fr 1fr;gap:7px;align-items:end;margin:6px 0 12px;min-height:132px;}
+  .podium-card{position:relative;padding:10px 5px 8px;border:1px solid rgba(127,161,255,.28);border-radius:12px;background:linear-gradient(180deg,rgba(38,48,91,.72),rgba(12,16,33,.92));text-align:center;overflow:hidden;}
+  .podium-card.first{grid-column:2;min-height:132px;border-color:rgba(255,209,102,.65);box-shadow:0 0 24px rgba(255,209,102,.14);}
+  .podium-card.second{grid-column:1;grid-row:1;min-height:116px;}.podium-card.third{grid-column:3;grid-row:1;min-height:105px;}
+  .podium-place{font:700 10px 'IBM Plex Mono',monospace;color:var(--gold);letter-spacing:.08em;margin-bottom:5px;}
+  .podium-photo{width:48px;height:48px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#18213e;border:2px solid rgba(255,255,255,.5);font-size:23px;}
+  .first .podium-photo{width:58px;height:58px;border-color:var(--gold);box-shadow:0 0 18px rgba(255,209,102,.35);}
+  .podium-photo img{width:100%;height:100%;object-fit:cover;}.podium-name{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.podium-score{font:600 9px 'IBM Plex Mono',monospace;color:var(--cyan);margin-top:3px;}
+  .lb-divider{font:600 8px 'IBM Plex Mono',monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--dimmer);text-align:left;margin:3px 0 2px;}
 
-  .end-actions{display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .end-actions{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:14px;margin-top:6px}.end-actions .playbtn{min-width:310px}.end-actions .ghostbtn{border:1px solid #253055;border-radius:10px;padding:12px 16px;background:rgba(13,18,32,.7)}
   .ghostbtn{appearance:none;border:none;background:transparent;cursor:pointer;color:#ffffff;
     font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;transition:color .15s;}
   .ghostbtn:hover, .ghostbtn:active{color:var(--cyan);}
@@ -207,6 +249,15 @@
 
   footer.credit{position:absolute;bottom:6px;left:0;right:0;text-align:center;z-index:20;
     font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dimmer);letter-spacing:.08em;pointer-events:none;}
+  @media(max-width:620px){
+    .overlay{padding:20px 14px;}.end-content-wrap{flex-direction:column;align-items:center;max-width:430px;}
+    .pilot-photo-section{width:100%;min-height:0;display:grid;grid-template-columns:auto 72px 1fr;grid-template-rows:auto auto auto;padding:12px 16px;text-align:left;}
+    .winner-kicker,.winner-crown{grid-column:1}.pilot-photo-frame{grid-column:2;grid-row:1/4;width:68px;height:68px}.winner-name,.winner-rank,.winner-score{grid-column:3}.winner-name{font-size:18px}.stat-row{gap:7px}.stat{padding:9px 4px}.stat .n{font-size:19px}
+    .leaderboard{max-width:100%;}.podium{min-height:118px}.podium-card.first{min-height:118px}.podium-card.second{min-height:105px}.podium-card.third{min-height:96px}
+    .first .podium-photo{width:50px;height:50px}.podium-photo{width:42px;height:42px}
+    .intro-shell{grid-template-columns:1fr;gap:12px}.intro-copy,.intro-form{padding:17px}.game-title{font-size:38px}.mission-rules{gap:5px}.rule-card{min-height:70px;padding:8px}.intro-form .player-setup{grid-template-columns:1fr 86px}.intro-form .selfie-pick{width:86px}
+    #endTitle{font-size:25px}.end-actions{flex-direction:column}.end-actions .playbtn{min-width:0;width:100%}.end-actions .ghostbtn{width:100%}.fuel-rail .panel{width:70px}.fuelbar{height:120px}
+  }
 </style>
 </head>
 <body>
@@ -224,17 +275,12 @@
     <div class="bracket br"></div>
 
     <div class="rl-watermark" id="rlWatermark">
-      <div class="rl-logo" style="opacity:0.85;pointer-events:none;">
-        <div class="mark">
-          <i class="c1"></i>
-          <i class="c2"></i>
-        </div>
-      </div>
+      <div class="rl-logo"><svg class="official-mark" viewBox="0 0 52 42" aria-hidden="true"><path fill="#6f8fff" d="M0 0h15l18 21-18 21H0l18-21z"/><path fill="#2457ff" d="M19 0h15l18 21-18 21H19l18-21z"/></svg><span class="word">rocketlane</span></div>
     </div>
 
     <div class="pilot-chip" id="pilotChip" style="display:none;">
       <div class="av" id="pilotAvSlot">🚀</div>
-      <span id="pilotNameSlot">Pilot</span>
+      <div class="pilot-meta"><span id="pilotNameSlot">Pilot</span><div class="lives" id="livesHud"><i class="life">❤</i><i class="life">❤</i><i class="life">❤</i></div></div>
     </div>
 
     <div class="hud top-left">
@@ -256,10 +302,13 @@
         <b id="phaseReadout" style="color:var(--cyan);font-size:13px;">Pre-launch</b>
       </div>
     </div>
-    <div class="hud bottom-right">
+    <div class="hud bottom-right fuel-rail">
       <div class="panel">
-        Shields
-        <div class="shields top-right" id="shieldsRow"></div>
+        <div class="fuel-mini-logo"><svg class="official-mark" viewBox="0 0 52 42" aria-label="Rocketlane"><path fill="#6f8fff" d="M0 0h15l18 21-18 21H0l18-21z"/><path fill="#2457ff" d="M19 0h15l18 21-18 21H19l18-21z"/></svg></div>
+        <div class="fuel-label">Rocketlane<br>fuel</div>
+        <b id="fuelReadout" style="color:var(--cyan);font-size:13px;">100%</b>
+        <div class="fuelbar"><div class="fuelbar-fill" id="fuelFill"></div></div>
+        <span id="levelReadout" style="display:block;margin-top:7px">Level 1</span>
       </div>
     </div>
 
@@ -284,33 +333,25 @@
     <!-- START SCREEN -->
     <div class="overlay" id="startScreen">
      <div class="overlay-inner">
-      <div class="rl-logo" style="margin-bottom:8px;">
-        <div class="mark">
-          <i class="c1"></i>
-          <i class="c2"></i>
+      <div class="rl-logo" style="margin-bottom:14px;"><svg class="official-mark" viewBox="0 0 52 42" aria-hidden="true"><path fill="#6f8fff" d="M0 0h15l18 21-18 21H0l18-21z"/><path fill="#2457ff" d="M19 0h15l18 21-18 21H19l18-21z"/></svg><span class="word">rocketlane</span></div>
+      <div class="intro-shell">
+       <section class="intro-form">
+        <div class="intro-code">Rocketlane presents</div>
+        <div class="game-title" style="font-size:40px;text-align:center">DEBRIS FIELD<span>Delivery velocity challenge</span></div>
+        <p class="sub" style="max-width:390px;margin-bottom:12px">Dodge blockers, collect Rocketlane fuel, and use Nitro Guard. You have <em>3 lives</em>. Go as far as you can.</p>
+        <div class="intro-status"><span>❤ 3 lives</span><span>◈ Refuel</span><span>✦ Nitro guard</span></div>
+        <div class="player-setup">
+          <div class="field-group"><label for="nameInput">Player name</label><input class="nameInput" id="nameInput" maxlength="16" placeholder="Enter your name"></div>
+          <label class="selfie-pick" id="startPhotoPick" for="startPhotoInput"><span class="cam">📸</span><span>Take photo</span></label>
+          <input type="file" accept="image/*" capture="user" class="photo-capture-input" id="startPhotoInput">
+          <div class="photo-note" id="photoNote">Photo appears on the winner card and leaderboard</div>
         </div>
-        <div class="word">rocket<b>lane</b></div>
+        <div class="field-group" style="display:none"><label>Pilot avatar</label><div class="avatar-row" id="avatarRow"></div></div>
+        <div class="mission-chips"><span>⚡ Faster TTV</span><span>◈ Utilization</span><span>✦ AI agents</span><span>◎ Visibility</span></div>
+        <button class="playbtn" id="startBtn">Launch mission</button>
+        <div class="hint" id="controlHint">Arrow keys, joystick, or drag to steer</div>
+       </section>
       </div>
-      <div class="eyebrow">PSA · Onboarding · Nitro automation agents</div>
-      <h1>DEBRIS&nbsp;FIELD</h1>
-      <p class="sub">Every project hits obstacles. Dodge the ones that stall delivery.<br>Catch the <span class="nitro">Nitro</span> boosts that speed you up. <em>Reach go‑live.</em></p>
-
-      <div class="field-group">
-        <label for="nameInput">Callsign</label>
-        <input class="nameInput" id="nameInput" maxlength="16" placeholder="Enter your name">
-      </div>
-      <div class="field-group">
-        <label>Pilot avatar</label>
-        <div class="avatar-row" id="avatarRow"></div>
-      </div>
-
-      <div class="legend">
-        <div><div class="swatch debris"></div>Blockers</div>
-        <div><div class="swatch boost"></div>Nitro boosts</div>
-        <div><div class="swatch gate"></div>Milestones</div>
-      </div>
-      <button class="playbtn" id="startBtn">Launch mission</button>
-      <div class="hint" id="controlHint">Arrow keys, joystick, or drag to steer</div>
      </div>
     </div>
 
@@ -325,13 +366,15 @@
       </div>
       <h1 id="endTitle">Onboarding stalled</h1>
       <div class="end-content-wrap">
-        <div class="pilot-photo-section">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;text-align:center;">Pilot</div>
+        <div class="pilot-photo-section" id="winnerCard">
+          <div class="winner-kicker">Rocketlane champion</div>
+          <div class="winner-crown" id="winnerCrown">👑</div>
           <div class="pilot-photo-frame empty" id="pilotPhotoFrame">
             <div>📸</div>
           </div>
-          <button class="photo-capture-btn" id="photoCaptureBtn">Capture</button>
-          <input type="file" accept="image/*;capture=environment" class="photo-capture-input" id="photoCaptureInput">
+          <div class="winner-name" id="winnerName">Pilot</div>
+          <div class="winner-rank" id="winnerRank">#1 Winner</div>
+          <div class="winner-score" id="winnerScore">0 m · Delivery velocity</div>
         </div>
 
         <div style="flex:1;">
@@ -343,7 +386,9 @@
           <p class="flavor" id="flavorText">Average onboarding takes <b>90 days</b>. Yours ended a little sooner than that.</p>
 
           <div class="leaderboard">
-            <div class="lb-title">🏆 Booth leaderboard</div>
+            <div class="lb-title">🏆 Live Top 10 · Delivery Velocity</div>
+            <div class="podium" id="lbPodium"></div>
+            <div class="lb-divider">Positions 4–10</div>
             <div id="lbRows"></div>
           </div>
         </div>
@@ -389,6 +434,7 @@
   // ---------- avatars ----------
   const AVATARS = ['🚀','🧑\u200d🚀','👩\u200d🚀','🛰️','⭐','🛸'];
   let pilotAvatar = AVATARS[0];
+  let pilotPhotoData = '';
   let pilotName = '';
   const avatarRow = document.getElementById('avatarRow');
   const AVATAR_NAMES = ['Rocket','Astronaut','Astronaut','Satellite','Star','UFO'];
@@ -433,20 +479,31 @@
     board.push(entry);
     board.sort((a,b)=> b.dist - a.dist || a.t - b.t);
     const rank = board.indexOf(entry);
-    board = board.slice(0,8);
+    board = board.slice(0,10);
     try{ await window.storage.set('leaderboard', JSON.stringify(board), true); }catch(e){}
     return {board, rank};
   }
   function renderLeaderboard(board, myDist){
     const wrap = document.getElementById('lbRows');
+    const podium = document.getElementById('lbPodium');
     wrap.innerHTML = '';
+    podium.innerHTML = '';
     if(!board.length){ wrap.innerHTML = '<div style="font-size:11px;color:var(--dimmer);padding:6px 0;">Be the first on the board.</div>'; return; }
     const medals = ['🥇','🥈','🥉'];
-    board.forEach((row,i)=>{
+    [1,0,2].forEach(i=>{
+      const row=board[i]; if(!row) return;
+      const card=document.createElement('div');
+      card.className='podium-card '+(i===0?'first':i===1?'second':'third')+(row.dist===Math.round(myDist)?' me':'');
+      const isImg=row.avatar&&row.avatar.startsWith('data:');
+      card.innerHTML=`<div class="podium-place">${medals[i]} #${i+1}</div><div class="podium-photo">${isImg?'<img src="'+row.avatar+'">':row.avatar}</div><div class="podium-name">${escapeHtml(row.name)}</div><div class="podium-score">${row.dist.toLocaleString()} m</div>`;
+      podium.appendChild(card);
+    });
+    board.slice(3,10).forEach((row,index)=>{
+      const i=index+3;
       const div = document.createElement('div');
-      div.className = 'lb-row' + (i===0 ? ' top1' : '') + (row.dist===Math.round(myDist) ? ' me' : '');
+      div.className = 'lb-row' + (row.dist===Math.round(myDist) ? ' me' : '');
       const isImg = row.avatar && row.avatar.startsWith('data:');
-      div.innerHTML = `<div class="rank">${medals[i]||(i+1)}</div>
+      div.innerHTML = `<div class="rank">${i+1}</div>
         <div class="av">${isImg?'<img src="'+row.avatar+'">':row.avatar}</div>
         <div class="nm">${escapeHtml(row.name)}</div>
         <div class="ds">${row.dist.toLocaleString()} m</div>`;
@@ -667,51 +724,59 @@
   ];
   let orbitCounter = 0;
 
-  const DEBRIS_LABELS = ['Scope Creep','Siloed Tools','Missed Deadline','Manual Chasing','Buried Docs','Stalled Sign-off','Resource Conflicts','Utilization Gaps','Billing Delays','Spreadsheet Hell'];
-  const BOOST_LABELS  = ['Nitro Agents','Automation','Visibility','One Workspace','Live Status','Fast TTV','Smart Forecasting','Auto-Billing'];
+  const DEBRIS_LABELS = ['Slow Time-to-Value','Scope Creep','Siloed Tools','Manual Chasing','Buried Docs','Stalled Sign-off','Resource Conflicts','Low Utilization','Margin Leakage','Spreadsheet Chaos'];
+  const BOOST_LABELS  = ['Faster TTV','High Utilization','AI Agents','One Workspace','Live Visibility','Smart Forecasting','Margin Control'];
 
   // ---------- state ----------
   let state = 'start';
-  let player, debris, boosts, particles, thrusterTrail, stars, planetY;
-  let distance, speed, baseSpeed, lives, velocityMeter, spawnTimer, boostSpawnTimer, milestoneIdx, endGameDelay;
-  let invuln, shakeT, timeLast, warpFlashT;
+  let player, debris, boosts, nitros, particles, thrusterTrail, stars, planetY;
+  let distance, speed, baseSpeed, runTime, fuel, lives, level, velocityMeter, spawnTimer, boostSpawnTimer, nitroSpawnTimer, milestoneIdx, endGameDelay;
+  let invuln, shakeT, timeLast, warpFlashT, nitroTime, shieldTime;
   let inputX = null;
   let keys = {left:false,right:false};
-  let gamepadLeft=false, gamepadRight=false;
+  let gamepadLeft=false, gamepadRight=false, gamepadUp=false, gamepadDown=false;
 
   function reset(){
     player = { x: W/2, y: H/2, r: 26, vx:0, vy:0, angle: 0 };
-    debris = []; boosts = []; particles = []; thrusterTrail = []; stars = [];
+    debris = []; boosts = []; nitros = []; particles = []; thrusterTrail = []; stars = [];
     for(let i=0;i<90;i++){
       stars.push({x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.7+0.3, s:Math.random()*45+18, tw:Math.random()*Math.PI*2});
     }
     planetY = H*1.15;
     distance = 0;
-    baseSpeed = 90;
+    baseSpeed = 400/3;
     speed = baseSpeed;
+    runTime = 0;
+    fuel = 100;
     lives = 3;
+    level = 1;
     velocityMeter = 0;
     spawnTimer = 0;
     boostSpawnTimer = 0;
+    nitroSpawnTimer = 5;
     milestoneIdx = 0;
     invuln = 0;
     shakeT = 0;
     warpFlashT = 0;
+    nitroTime = 0;
+    shieldTime = 0;
     orbitCounter = 0;
     inputX = null;
     endGameDelay = 0;
-    renderShields();
+    renderFuel();
+    renderLives();
     document.getElementById('phaseReadout').textContent = 'Pre-launch';
   }
 
-  function renderShields(){
-    const row = document.getElementById('shieldsRow');
-    row.innerHTML = '';
-    for(let i=0;i<3;i++){
-      const d = document.createElement('div');
-      d.className = 'shield-dot' + (i < lives ? '' : ' off');
-      row.appendChild(d);
-    }
+  function renderFuel(){
+    const pct = Math.max(0, Math.min(100, fuel));
+    document.getElementById('fuelReadout').textContent = Math.ceil(pct) + '%';
+    document.getElementById('fuelFill').style.height = pct + '%';
+    document.getElementById('fuelFill').style.filter = pct < 25 ? 'saturate(1.6) brightness(1.2)' : 'none';
+    document.getElementById('levelReadout').textContent = 'Level ' + level;
+  }
+  function renderLives(){
+    document.querySelectorAll('#livesHud .life').forEach((heart,i)=>heart.classList.toggle('off',i>=lives));
   }
 
   // ---------- input: keyboard ----------
@@ -771,7 +836,7 @@
   // ---------- input: gamepad / joystick ----------
   let gamepadJoystickAngle = null;
   function pollGamepad(){
-    gamepadLeft=false; gamepadRight=false;
+    gamepadLeft=false; gamepadRight=false; gamepadUp=false; gamepadDown=false;
     gamepadJoystickAngle = null;
     const pads = navigator.getGamepads ? navigator.getGamepads() : [];
     for(const gp of pads){
@@ -788,11 +853,15 @@
       // Left/right movement
       if(axisX < -0.35) gamepadLeft = true;
       else if(axisX > 0.35) gamepadRight = true;
+      if(axisY < -0.35) gamepadUp = true;
+      else if(axisY > 0.35) gamepadDown = true;
       if(gp.buttons){
         if(gp.buttons[14] && gp.buttons[14].pressed) gamepadLeft = true;
         if(gp.buttons[15] && gp.buttons[15].pressed) gamepadRight = true;
+        if(gp.buttons[12] && gp.buttons[12].pressed) gamepadUp = true;
+        if(gp.buttons[13] && gp.buttons[13].pressed) gamepadDown = true;
       }
-      if(gamepadLeft || gamepadRight || gamepadJoystickAngle !== null) break;
+      if(gamepadLeft || gamepadRight || gamepadUp || gamepadDown || gamepadJoystickAngle !== null) break;
     }
   }
 
@@ -801,10 +870,10 @@
   function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
   function makeDebrisShape(r){
-    const pts = 8, shape = [];
+    const pts = 11, shape = [];
     for(let i=0;i<pts;i++){
       const ang = (i/pts) * Math.PI*2;
-      const rr = r * rand(0.72,1.15);
+      const rr = r * rand(.76,1.13);
       shape.push({x:Math.cos(ang)*rr, y:Math.sin(ang)*rr});
     }
     return shape;
@@ -814,14 +883,18 @@
     const shape = makeDebrisShape(r);
     const craters = [];
     for(let i=0;i<4;i++) craters.push({x:rand(-r*0.4,r*0.4), y:rand(-r*0.4,r*0.4), r:rand(2,5)});
-    const colors = ['#ffff00','#ff00ff','#ffaa00'];
-    const astColor = pick(colors);
+    const palettes = [['#ff4e7a','#34303d'],['#ff9d3d','#3b312b'],['#b6d83d','#30382e'],['#5d8dff','#293349']];
+    const palette = pick(palettes);
     debris.push({ x: rand(r+16, W-r-16), y: -r-10, r, vy: speed * rand(0.9,1.15),
-      rot: rand(0,Math.PI*2), rotSpeed: rand(-0.6,0.6), label: pick(DEBRIS_LABELS), shape, craters, color: astColor });
+      rot: rand(0,Math.PI*2), rotSpeed: rand(-0.6,0.6), label: pick(DEBRIS_LABELS), shape, craters, color: palette[0], color2:palette[1] });
   }
   function spawnBoost(){
     const r = 33;
     boosts.push({ x: rand(r+16, W-r-16), y:-r-10, r, vy: speed*rand(0.85,1.0), label: pick(BOOST_LABELS), pulse: Math.random()*Math.PI*2 });
+  }
+  function spawnNitro(){
+    const r = 38;
+    nitros.push({x:rand(r+16,W-r-16),y:-r-10,r,vy:speed*.95,pulse:0});
   }
   function spawnParticles(x,y,color,n){
     for(let i=0;i<n;i++){
@@ -855,7 +928,7 @@
 
     const accel = 1500, maxV = 430, friction = 0.86;
     const activeLeft = keys.left || gamepadLeft, activeRight = keys.right || gamepadRight;
-    const activeUp = keys2.up, activeDown = keys2.down;
+    const activeUp = keys2.up || gamepadUp, activeDown = keys2.down || gamepadDown;
 
     if(activeLeft || activeRight){
       inputX = null;
@@ -868,9 +941,16 @@
       player.vx *= friction;
     }
 
-    if(activeUp) player.vy -= accel*dt;
-    if(activeDown) player.vy += accel*dt;
-    player.vy *= friction;
+    if(activeUp || activeDown){
+      inputY = null;
+      if(activeUp) player.vy -= accel*dt;
+      if(activeDown) player.vy += accel*dt;
+    } else if(inputY !== null){
+      const dy = inputY - player.y;
+      player.vy = Math.max(-maxV, Math.min(maxV, dy*10));
+    } else {
+      player.vy *= friction;
+    }
 
     player.vx = Math.max(-maxV, Math.min(maxV, player.vx));
     player.vy = Math.max(-maxV, Math.min(maxV, player.vy));
@@ -894,14 +974,22 @@
       player.angle = 0;
     }
 
-    speed = baseSpeed + distance*0.028;
+    level = 1 + Math.floor(distance/900);
+    runTime += dt;
+    speed = baseSpeed + runTime*(5/3);
+    if(nitroTime>0){ speed *= 1.7; nitroTime -= dt; }
+    if(shieldTime>0) shieldTime=Math.max(0,shieldTime-dt);
     distance += speed*dt*0.35;
+    fuel -= dt * (4.5 + level*0.48 + (nitroTime>0 ? 1.05 : 0));
+    if(fuel<=0 && endGameDelay<=0){ fuel=0; endGameDelay=1.2; }
 
     spawnTimer -= dt;
     const spawnEvery = Math.max(0.42, 1.05 - distance/6000);
     if(spawnTimer<=0){ spawnDebris(); spawnTimer = spawnEvery; }
     boostSpawnTimer -= dt;
     if(boostSpawnTimer<=0){ spawnBoost(); boostSpawnTimer = rand(1.6,2.6); }
+    nitroSpawnTimer -= dt;
+    if(nitroSpawnTimer<=0){ spawnNitro(); nitroSpawnTimer = rand(7,11); }
 
     for(const s of stars){ s.y += s.s*dt; s.tw += dt*2.2; if(s.y>H){ s.y=-4; s.x=Math.random()*W; } }
     planetY -= speed*dt*0.05;
@@ -920,15 +1008,17 @@
       const d = debris[i];
       d.y += d.vy*dt; d.rot += d.rotSpeed*dt;
       if(d.y - d.r > H){ debris.splice(i,1); continue; }
-      if(invuln<=0){
-        const dx = d.x-player.x, dy=d.y-player.y;
+      const dx = d.x-player.x, dy=d.y-player.y;
+      if(shieldTime>0 && Math.sqrt(dx*dx+dy*dy) < d.r*.9 + player.r+12){
+        debris.splice(i,1);spawnParticles(d.x,d.y,COL.cyan,42);distance+=18;playBoostSound();
+      } else if(invuln<=0){
         if(Math.sqrt(dx*dx+dy*dy) < d.r*0.82 + player.r*0.75){
           debris.splice(i,1);
-          lives--; invuln = 1.4; shakeT = 0.55;
+          lives=Math.max(0,lives-1);fuel = Math.max(0,fuel-10); invuln = 1.6; shakeT = 0.55;
           spawnParticles(player.x,player.y,COL.coral,50);
           playHitSound();
-          renderShields();
-          if(lives<=0){ endGameDelay = 2.0; }
+          renderFuel();renderLives();
+          if(lives<=0 || fuel<=0){ endGameDelay = 1.2; }
         }
       }
     }
@@ -942,14 +1032,20 @@
         boosts.splice(i,1);
         spawnParticles(b.x,b.y,COL.cyan,35);
         playBoostSound();
-        velocityMeter = Math.min(100, velocityMeter+16);
-        distance += 60;
-        if(velocityMeter>=100){
-          velocityMeter = 0; distance += 220; warpFlashT = 0.65;
-          spawnParticles(player.x,player.y,COL.blueSoft,70);
-          playMilestoneSound();
-          shakeT = 0.25;
-        }
+        fuel = Math.min(100,fuel+24);
+        velocityMeter = fuel;
+        distance += 25;
+        renderFuel();
+      }
+    }
+
+    for(let i=nitros.length-1;i>=0;i--){
+      const n=nitros[i]; n.y+=n.vy*dt; n.pulse+=dt*5;
+      if(n.y-n.r>H){ nitros.splice(i,1); continue; }
+      const dx=n.x-player.x,dy=n.y-player.y;
+      if(Math.sqrt(dx*dx+dy*dy)<n.r*.85+player.r*.8){
+        nitros.splice(i,1); nitroTime=4.5; shieldTime=4.5; warpFlashT=.75; shakeT=.2;
+        spawnParticles(n.x,n.y,COL.gold,60); playBoostSound();
       }
     }
 
@@ -972,9 +1068,11 @@
       if(orbitCounter > 1400){ orbitCounter = 0; showMilestone('In Orbit'); playMilestoneSound(); }
     }
 
-    document.getElementById('velReadout').innerHTML = Math.round(speed*3.2) + '<span style="font-size:10px;color:var(--dim);"> km/h</span>';
+    document.getElementById('velReadout').innerHTML = Math.round(speed*3) + '<span style="font-size:10px;color:var(--dim);"> km/h</span>';
     document.getElementById('distReadout').textContent = Math.round(distance).toLocaleString() + ' m';
-    document.getElementById('velFill').style.width = velocityMeter + '%';
+    document.getElementById('velFill').style.width = Math.min(100,(speed/420)*100) + '%';
+    document.getElementById('velReadout').classList.toggle('nitro-status',nitroTime>0);
+    renderFuel();
   }
 
   function drawPlanet(){
@@ -992,126 +1090,60 @@
   function drawRocket(x,y,angle,invulnFlicker){
     ctx.save();
     ctx.translate(x,y);
-    ctx.rotate(angle);
+    // The ship artwork points upward; pointer/gamepad angles are measured from +X.
+    ctx.rotate(angle === 0 ? 0 : angle + Math.PI/2);
     if(invulnFlicker){ ctx.globalAlpha = 0.4; }
 
-    // TRIPLE exhaust flames - attached to rear of rocket
-    const flameLen = 45 + Math.random()*25;
-    const rearY = 20; // rear fin area of rocket
+    // Hot plasma exhaust with a clean single-engine silhouette.
+    const flameLen = 38 + Math.random()*16;
+    const flame = ctx.createLinearGradient(0,18,0,18+flameLen);
+    flame.addColorStop(0,'#ffffff'); flame.addColorStop(.18,'#78fff1');
+    flame.addColorStop(.48,'#4f72ff'); flame.addColorStop(.74,'#ff3bd4'); flame.addColorStop(1,'rgba(255,59,212,0)');
+    ctx.shadowColor='#38e8ff'; ctx.shadowBlur=22;
+    ctx.beginPath(); ctx.moveTo(-7,17); ctx.quadraticCurveTo(-9,31,0,18+flameLen);
+    ctx.quadraticCurveTo(9,31,7,17); ctx.closePath(); ctx.fillStyle=flame; ctx.fill();
 
-    // Function to draw flame at specific position
-    const drawFlame = (offsetX) => {
-      const fx = offsetX;
-      const fy = rearY;
+    // Neon fins make the craft recognizable even at game speed.
+    ctx.shadowColor='#8b5cff'; ctx.shadowBlur=18;
+    const wingGrad=ctx.createLinearGradient(-24,4,24,18);
+    wingGrad.addColorStop(0,'#ff3bd4'); wingGrad.addColorStop(.5,'#664cff'); wingGrad.addColorStop(1,'#27f4ff');
+    ctx.fillStyle=wingGrad;
+    ctx.beginPath(); ctx.moveTo(-10,1); ctx.lineTo(-25,17); ctx.lineTo(-8,12); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(10,1); ctx.lineTo(25,17); ctx.lineTo(8,12); ctx.closePath(); ctx.fill();
 
-      const fgrad = ctx.createLinearGradient(fx,fy, fx,fy+flameLen);
-      fgrad.addColorStop(0,'rgba(255,120,0,1)'); fgrad.addColorStop(0.2,'rgba(255,50,0,0.95)'); fgrad.addColorStop(0.6,'rgba(255,180,50,0.4)'); fgrad.addColorStop(1,'rgba(255,220,100,0)');
-      ctx.beginPath();
-      ctx.moveTo(fx-8, fy);
-      ctx.lineTo(fx+8, fy);
-      ctx.lineTo(fx, fy+flameLen);
-      ctx.closePath();
-      ctx.fillStyle = fgrad;
-      ctx.fill();
+    // Sleek faceted fuselage.
+    const bodyGrad=ctx.createLinearGradient(-13,-26,13,18);
+    bodyGrad.addColorStop(0,'#efffff'); bodyGrad.addColorStop(.28,'#7df8ff');
+    bodyGrad.addColorStop(.62,'#496bff'); bodyGrad.addColorStop(1,'#7a35dc');
+    ctx.fillStyle=bodyGrad; ctx.shadowColor='#39e7ff'; ctx.shadowBlur=24;
+    ctx.beginPath(); ctx.moveTo(0,-34); ctx.bezierCurveTo(13,-22,15,-2,9,18);
+    ctx.lineTo(-9,18); ctx.bezierCurveTo(-15,-2,-13,-22,0,-34); ctx.closePath(); ctx.fill();
 
-      // inner bright flame
-      const fgrad2 = ctx.createLinearGradient(fx,fy, fx,fy+flameLen*0.65);
-      fgrad2.addColorStop(0,'rgba(255,255,120,0.95)'); fgrad2.addColorStop(1,'rgba(255,150,0,0)');
-      ctx.beginPath();
-      ctx.moveTo(fx-4, fy);
-      ctx.lineTo(fx+4, fy);
-      ctx.lineTo(fx, fy+flameLen*0.65);
-      ctx.closePath();
-      ctx.fillStyle = fgrad2;
-      ctx.fill();
-    };
+    // Central AI core and circuit rails.
+    ctx.shadowBlur=12; ctx.shadowColor='#ff4eea';
+    const core=ctx.createRadialGradient(-2,-8,1,0,-7,9);
+    core.addColorStop(0,'#ffffff'); core.addColorStop(.32,'#63fff2'); core.addColorStop(.68,'#9a5cff'); core.addColorStop(1,'#28135c');
+    ctx.beginPath(); ctx.arc(0,-7,8,0,Math.PI*2); ctx.fillStyle=core; ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.85)'; ctx.lineWidth=1.3;
+    ctx.beginPath(); ctx.moveTo(-7,5); ctx.lineTo(-3,9); ctx.lineTo(-3,15); ctx.moveTo(7,5); ctx.lineTo(3,9); ctx.lineTo(3,15); ctx.stroke();
+    ctx.fillStyle='#dfffff'; ctx.beginPath(); ctx.arc(-3,15,1.6,0,Math.PI*2); ctx.arc(3,15,1.6,0,Math.PI*2); ctx.fill();
 
-    // Draw left, right, and center flames from rear
-    drawFlame(-12);   // left
-    drawFlame(12);    // right
-    drawFlame(0);     // center
-
-    // glow halo
-    ctx.shadowColor = 'rgba(0,212,255,0.7)'; ctx.shadowBlur = 36;
-    ctx.fillStyle = 'rgba(0,212,255,0.08)';
-    ctx.beginPath(); ctx.arc(0,0,32,0,Math.PI*2); ctx.fill();
-    ctx.shadowBlur = 0;
-
-    // stylized game rocket - more angular and colorful
-    // nose cone - bright yellow/gold gradient
-    ctx.shadowColor = COL.blue; ctx.shadowBlur = 26;
-    const noseGrad = ctx.createLinearGradient(0,-28,-4,-16);
-    noseGrad.addColorStop(0,'#ffff00'); noseGrad.addColorStop(1,'#ffaa00');
-    ctx.fillStyle = noseGrad;
-    ctx.beginPath();
-    ctx.moveTo(0,-28);
-    ctx.lineTo(9,-14);
-    ctx.lineTo(-9,-14);
-    ctx.closePath();
-    ctx.fill();
-
-    // nose stripe
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(-1,-26,2,10);
-
-    // main body - vibrant blue
-    const bodyGrad = ctx.createLinearGradient(-11,0,11,0);
-    bodyGrad.addColorStop(0,'#00aaff'); bodyGrad.addColorStop(0.5,'#00ffff'); bodyGrad.addColorStop(1,'#0088ff');
-    ctx.fillStyle = bodyGrad;
-    ctx.fillRect(-11,-14,22,28);
-
-    // body accent lines
-    ctx.fillStyle = 'rgba(255,255,0,0.4)';
-    ctx.fillRect(-4,-14,2,28);
-    ctx.fillRect(2,-14,2,28);
-
-    // window - larger and more gamified
-    ctx.fillStyle = '#ffffff';
-    ctx.beginPath();
-    ctx.arc(0,-4,7,0,Math.PI*2);
-    ctx.fill();
-
-    // window inner glow
-    ctx.fillStyle = '#ffff88';
-    ctx.beginPath();
-    ctx.arc(0,-4,5,0,Math.PI*2);
-    ctx.fill();
-
-    // Rocketlane logo in window
-    ctx.fillStyle = '#0033ff';
-    ctx.font = 'bold 12px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('>>', 0, -4);
-
-    // side wings - bright cyan
-    ctx.fillStyle = '#00ffff';
-    ctx.beginPath(); ctx.moveTo(-11,4); ctx.lineTo(-20,8); ctx.lineTo(-16,12); ctx.closePath(); ctx.fill();
-    ctx.beginPath(); ctx.moveTo(11,4); ctx.lineTo(20,8); ctx.lineTo(16,12); ctx.closePath(); ctx.fill();
-
-    // wing glows
-    ctx.strokeStyle = '#ffff00';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.moveTo(-11,4); ctx.lineTo(-20,8); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(11,4); ctx.lineTo(20,8); ctx.stroke();
-
-    // rear fin section
-    ctx.fillStyle = '#ff6600';
-    ctx.fillRect(-12,14,24,6);
-
-    // rear fins - stylized
-    ctx.fillStyle = '#00ccff';
-    ctx.beginPath(); ctx.moveTo(-8,14); ctx.lineTo(-14,18); ctx.lineTo(-10,20); ctx.closePath(); ctx.fill();
-    ctx.beginPath(); ctx.moveTo(8,14); ctx.lineTo(14,18); ctx.lineTo(10,20); ctx.closePath(); ctx.fill();
-
-    // fin glow
-    ctx.fillStyle = 'rgba(0,255,255,0.4)';
-    ctx.shadowColor = '#00ffff';
-    ctx.shadowBlur = 8;
-    ctx.beginPath(); ctx.moveTo(-8,14); ctx.lineTo(-14,18); ctx.lineTo(-10,20); ctx.closePath(); ctx.fill();
-    ctx.shadowBlur = 0;
+    // Sharp white nose highlight and dark engine collar.
+    ctx.fillStyle='rgba(255,255,255,.9)'; ctx.beginPath(); ctx.moveTo(0,-32); ctx.lineTo(3,-19); ctx.lineTo(0,-22); ctx.closePath(); ctx.fill();
+    ctx.shadowBlur=0; ctx.fillStyle='#111737'; roundRect(-9,15,18,5,2); ctx.fill();
 
     ctx.restore();
+  }
+
+  function drawNitroGuard(x,y){
+    if(shieldTime<=0) return;
+    const pulse=1+Math.sin(performance.now()*.012)*.035;
+    ctx.save();ctx.translate(x,y);ctx.scale(pulse,pulse);
+    const guard=ctx.createRadialGradient(-12,-15,4,0,0,46);
+    guard.addColorStop(0,'rgba(255,255,255,.16)');guard.addColorStop(.62,'rgba(48,232,255,.08)');guard.addColorStop(1,'rgba(71,91,255,.26)');
+    ctx.fillStyle=guard;ctx.shadowColor='#42f5ff';ctx.shadowBlur=24;ctx.beginPath();ctx.arc(0,0,43,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;ctx.strokeStyle='#67fff0';ctx.lineWidth=2;ctx.setLineDash([8,5]);ctx.beginPath();ctx.arc(0,0,43,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='#bafff7';ctx.font="700 7px 'Press Start 2P', monospace";ctx.textAlign='center';ctx.fillText('NITRO GUARD',0,-52);ctx.restore();
   }
 
   function draw(){
@@ -1142,51 +1174,105 @@
       for(const d of debris){
         ctx.save();
         ctx.translate(d.x,d.y); ctx.rotate(d.rot);
-        ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 14;
+        ctx.shadowColor = d.color; ctx.shadowBlur = 12;
         ctx.beginPath();
         d.shape.forEach((p,i)=> i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
         ctx.closePath();
-        const grad = ctx.createRadialGradient(-d.r*0.3,-d.r*0.3,2,0,0,d.r*1.2);
-        grad.addColorStop(0,d.color); grad.addColorStop(1,d.color.replace(/f/g,'9').replace(/a/g,'4'));
+        const grad = ctx.createRadialGradient(-d.r*.34,-d.r*.42,2,0,0,d.r*1.2);
+        grad.addColorStop(0,'#656270');grad.addColorStop(.38,d.color2);grad.addColorStop(.78,'#171923');grad.addColorStop(1,'#080a10');
         ctx.fillStyle = grad; ctx.fill();
         ctx.shadowBlur = 0;
-        ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth=2; ctx.stroke();
-        ctx.fillStyle = 'rgba(0,0,0,0.5)';
-        for(const c of d.craters){ ctx.beginPath(); ctx.arc(c.x,c.y,c.r,0,Math.PI*2); ctx.fill(); }
+        ctx.strokeStyle = d.color; ctx.lineWidth=3; ctx.stroke();
+        // Retro rock craters and chipped facets.
+        for(const c of d.craters){
+          const cg=ctx.createRadialGradient(c.x-c.r*.3,c.y-c.r*.3,1,c.x,c.y,c.r*2);
+          cg.addColorStop(0,'#080910');cg.addColorStop(.65,'#252733');cg.addColorStop(1,'rgba(255,255,255,.08)');
+          ctx.fillStyle=cg;ctx.beginPath();ctx.arc(c.x,c.y,c.r*1.75,0,Math.PI*2);ctx.fill();
+          ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1;ctx.stroke();
+        }
+        ctx.strokeStyle='rgba(255,255,255,.13)';ctx.lineWidth=1;
+        ctx.beginPath();ctx.moveTo(-d.r*.55,-d.r*.2);ctx.lineTo(-d.r*.12,-d.r*.44);ctx.lineTo(d.r*.2,-d.r*.2);ctx.moveTo(d.r*.08,d.r*.48);ctx.lineTo(d.r*.42,d.r*.18);ctx.stroke();
         ctx.restore();
 
         ctx.save();
-        ctx.font = "700 15px 'IBM Plex Mono', monospace";
+        ctx.translate(d.x,d.y);
+        ctx.fillStyle='rgba(5,7,16,.86)';ctx.strokeStyle=d.color;ctx.lineWidth=1;
+        roundRect(-d.r*.72,-14,d.r*1.44,28,6);ctx.fill();ctx.stroke();
+        ctx.translate(-d.x,-d.y);
+        ctx.font = "700 9px 'Press Start 2P', monospace";
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center'; ctx.textBaseline='middle';
-        ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 6; ctx.shadowOffsetX = 1; ctx.shadowOffsetY = 1;
-        wrapLabel(d.label, d.x, d.y, d.r*1.6);
+        ctx.shadowColor = d.color; ctx.shadowBlur = 8;
+        wrapLabel(d.label, d.x, d.y+1, d.r*1.18);
         ctx.restore();
       }
 
       for(const b of boosts){
         const pulse = 1 + Math.sin(b.pulse)*0.08;
         ctx.save();
-        ctx.translate(b.x,b.y);
-        ctx.strokeStyle = 'rgba(94,234,212,0.35)'; ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.arc(0,0,b.r*pulse+7,0,Math.PI*2); ctx.stroke();
-        ctx.shadowColor = COL.cyan; ctx.shadowBlur = 20;
-        const grad = ctx.createRadialGradient(-b.r*0.3,-b.r*0.3,1,0,0,b.r*pulse);
-        grad.addColorStop(0,'#f2fffc'); grad.addColorStop(1,COL.cyan);
-        ctx.beginPath(); ctx.arc(0,0,b.r*pulse,0,Math.PI*2); ctx.fillStyle=grad; ctx.fill();
+        ctx.translate(b.x,b.y);ctx.scale(pulse,pulse);
+        // Rocketlane capability cell: recognisable, collectible and distinct from blockers.
+        ctx.setLineDash([3,5]);ctx.strokeStyle='rgba(89,244,225,.5)';ctx.lineWidth=1;
+        ctx.beginPath();ctx.arc(0,0,b.r+9,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+        ctx.shadowColor='#48ffe4';ctx.shadowBlur=22;
+        const cellGrad=ctx.createLinearGradient(-24,-26,24,28);
+        cellGrad.addColorStop(0,'#8ffff0');cellGrad.addColorStop(.45,'#23d8d2');cellGrad.addColorStop(1,'#3154da');
+        ctx.fillStyle='#0a1430';roundRect(-25,-29,50,58,10);ctx.fill();
+        ctx.strokeStyle='#7affea';ctx.lineWidth=3;ctx.stroke();ctx.shadowBlur=0;
+        ctx.fillStyle=cellGrad;roundRect(-18,-20,36,40,6);ctx.fill();
+        ctx.fillStyle='#bafff5';roundRect(-9,-34,18,7,2);ctx.fill();
+        ctx.fillStyle='rgba(4,10,30,.36)';ctx.fillRect(-18,9,36,11);
+        // Rocketlane double-chevron mark.
+        ctx.fillStyle='#ffffff';ctx.shadowColor='#ffffff';ctx.shadowBlur=4;
+        ctx.beginPath();ctx.moveTo(-12,-8);ctx.lineTo(-4,-8);ctx.lineTo(3,0);ctx.lineTo(-4,8);ctx.lineTo(-12,8);ctx.lineTo(-5,0);ctx.closePath();ctx.fill();
+        ctx.beginPath();ctx.moveTo(-1,-8);ctx.lineTo(7,-8);ctx.lineTo(14,0);ctx.lineTo(7,8);ctx.lineTo(-1,8);ctx.lineTo(6,0);ctx.closePath();ctx.fill();ctx.shadowBlur=0;
+        ctx.fillStyle='#061229';ctx.font="700 6px 'Press Start 2P', monospace";ctx.textAlign='center';ctx.fillText('FUEL',0,16);
         ctx.restore();
         ctx.save();
-        ctx.font = "600 15px 'IBM Plex Mono', monospace";
+        ctx.font = "700 8px 'Press Start 2P', monospace";
         ctx.textAlign='center'; ctx.textBaseline='middle';
         const lw = ctx.measureText(b.label).width;
-        const lx = b.x, ly = b.y + b.r + 16;
-        ctx.fillStyle = 'rgba(4,6,10,0.72)';
-        roundRect(lx - lw/2 - 7, ly - 9, lw + 14, 18, 9); ctx.fill();
-        ctx.fillStyle = COL.white;
+        const lx = b.x, ly = b.y + b.r + 18;
+        ctx.fillStyle = 'rgba(5,8,24,.88)';ctx.strokeStyle='rgba(94,234,212,.5)';ctx.lineWidth=1;
+        roundRect(lx - lw/2 - 10, ly - 10, lw + 20, 20, 10); ctx.fill();ctx.stroke();
+        ctx.fillStyle = '#9ffff1';
         ctx.fillText(b.label, lx, ly);
         ctx.restore();
       }
 
+      for(const n of nitros){
+        const pulse=1+Math.sin(n.pulse)*.1;
+        ctx.save(); ctx.translate(n.x,n.y); ctx.scale(pulse,pulse);
+
+        // Orbiting AI energy rings.
+        ctx.rotate(n.pulse*.08);
+        ctx.strokeStyle='rgba(68,255,232,.65)'; ctx.lineWidth=2;
+        ctx.shadowColor='#44ffe8'; ctx.shadowBlur=18;
+        ctx.beginPath(); ctx.ellipse(0,0,45,19,-.35,0,Math.PI*2); ctx.stroke();
+        ctx.strokeStyle='rgba(255,61,218,.72)';
+        ctx.beginPath(); ctx.ellipse(0,0,42,22,.5,0,Math.PI*2); ctx.stroke();
+        ctx.rotate(-n.pulse*.08);
+
+        // Pop-colour hexagonal power core.
+        const ng=ctx.createLinearGradient(-30,-25,31,25);
+        ng.addColorStop(0,'#ff39d7'); ng.addColorStop(.42,'#7d4dff'); ng.addColorStop(.72,'#15dfff'); ng.addColorStop(1,'#68ffb7');
+        ctx.shadowColor='#9d5cff'; ctx.shadowBlur=30; ctx.fillStyle=ng;
+        ctx.beginPath();
+        for(let i=0;i<6;i++){ const a=-Math.PI/2+i*Math.PI/3, px=Math.cos(a)*31, py=Math.sin(a)*31; i?ctx.lineTo(px,py):ctx.moveTo(px,py); }
+        ctx.closePath(); ctx.fill();
+        ctx.strokeStyle='rgba(255,255,255,.9)'; ctx.lineWidth=2; ctx.stroke();
+
+        // Neural-node detail and readable badge.
+        ctx.shadowBlur=0; ctx.strokeStyle='rgba(255,255,255,.6)'; ctx.lineWidth=1;
+        [[-20,-4,-10,-10],[20,-4,10,-10],[-18,10,-8,7],[18,10,8,7]].forEach(v=>{ctx.beginPath();ctx.moveTo(v[0],v[1]);ctx.lineTo(v[2],v[3]);ctx.stroke();});
+        ctx.fillStyle='#fff'; [[-21,-4],[21,-4],[-19,10],[19,10]].forEach(v=>{ctx.beginPath();ctx.arc(v[0],v[1],2,0,Math.PI*2);ctx.fill();});
+        ctx.fillStyle='rgba(8,7,30,.84)'; roundRect(-27,-10,54,20,8); ctx.fill();
+        ctx.fillStyle='#ffffff'; ctx.font="700 10px 'Press Start 2P', monospace";
+        ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('NITRO',0,0);
+        ctx.restore();
+      }
+
+      drawNitroGuard(player.x,player.y);
       drawRocket(player.x, player.y, player.angle, invuln>0 && Math.floor(invuln*14)%2===0);
 
       for(const p of particles){
@@ -1238,6 +1324,9 @@
     state = 'over';
     stopBackgroundMusic();
     playEndGameFanfare();
+    const identityFrame=document.getElementById('pilotPhotoFrame');
+    identityFrame.classList.toggle('empty',!pilotPhotoData);
+    identityFrame.innerHTML=pilotPhotoData?'<img src="'+pilotPhotoData+'" alt="'+escapeHtml(pilotName)+'">':'<div style="font-size:52px">'+pilotAvatar+'</div>';
     const phaseReached = milestoneIdx===0 ? 'Pre-launch' :
       (milestoneIdx>=MILESTONES.length ? 'In Orbit' : MILESTONES[milestoneIdx-1].label);
     document.getElementById('finalDist').textContent = Math.round(distance).toLocaleString();
@@ -1250,30 +1339,31 @@
     if(isNewBest) saveBest(Math.round(distance));
     document.getElementById('bestDist').textContent = Math.round(Math.max(distance,bestScore)).toLocaleString();
 
-    document.getElementById('endTitle').textContent = isNewBest ? 'New best run' : (milestoneIdx>=MILESTONES.length ? 'Mission accomplished' : 'Onboarding stalled');
+    document.getElementById('endTitle').textContent = isNewBest ? 'New best run' : (milestoneIdx>=MILESTONES.length ? 'Mission accomplished' : 'Fuel depleted');
 
     const flavors = [
       `Average onboarding takes <b>90 days</b>. You flew ${Math.round(distance)} meters before something got in the way.`,
       `Most implementations stall on <b>siloed tools</b> and buried docs. You made it further than that.`,
       `Rocketlane customers cut time‑to‑value with <b>Nitro</b> automation agents doing the chasing for them.`,
-      `Every asteroid you hit is a real delivery blocker teams deal with daily. Every orb is what fixes it.`
+      `Every challenge you hit costs fuel. Rocketlane capabilities keep delivery moving, and Nitro gives you the edge.`
     ];
     document.getElementById('flavorText').innerHTML = milestoneIdx>=MILESTONES.length
       ? `You reached <b>go-live</b> and kept flying. That's rocket speed.`
       : flavors[Math.floor(Math.random()*flavors.length)];
 
-    const {board, rank} = await submitScore(pilotName || 'Pilot', pilotAvatar, distance);
+    const {board, rank} = await submitScore(pilotName || 'Pilot', pilotPhotoData || pilotAvatar, distance);
     renderLeaderboard(board, distance);
 
     const trophyIcon = document.getElementById('trophyIcon');
     const rankTag = document.getElementById('rankTag');
     const bestCard = document.getElementById('bestDistCard');
+    const winnerCard = document.getElementById('winnerCard');
     const medals = ['🏆','🥈','🥉'];
     if(rank <= 2){
       trophyIcon.textContent = medals[rank];
       rankTag.textContent = rank===0 ? '#1 on the board' : `#${rank+1} on the board`;
       rankTag.classList.remove('plain');
-    } else if(rank < 8){
+    } else if(rank < 10){
       trophyIcon.textContent = '🛰️';
       rankTag.textContent = `#${rank+1} on the board`;
       rankTag.classList.add('plain');
@@ -1282,6 +1372,15 @@
       rankTag.textContent = isNewBest ? 'New personal best' : 'Keep climbing';
       rankTag.classList.add('plain');
     }
+    const shownRank = rank < 10 ? rank+1 : '10+';
+    winnerCard.classList.toggle('standard',rank>2);
+    document.getElementById('winnerCrown').textContent = rank===0?'👑':rank===1?'🥈':rank===2?'🥉':'🚀';
+    document.getElementById('winnerName').textContent = pilotName || 'Pilot';
+    document.getElementById('winnerRank').textContent = rank===0?'#1 Game Winner':`#${shownRank} Leaderboard`;
+    document.getElementById('winnerScore').textContent = `${Math.round(distance).toLocaleString()} m · Delivery velocity`;
+    document.querySelector('#winnerCard .winner-kicker').textContent = rank<=2?'Rocketlane champion':'Mission result';
+    if(rank===0) document.getElementById('endTitle').textContent='Delivery Velocity Champion';
+    else if(rank<=2) document.getElementById('endTitle').textContent='Podium Finish';
     bestCard.classList.toggle('hero', isNewBest);
 
     document.getElementById('endScreen').classList.remove('hidden');
@@ -1309,7 +1408,7 @@
   function startGame(){
     pilotName = (document.getElementById('nameInput').value || '').trim().slice(0,16) || 'Pilot';
     document.getElementById('pilotChip').style.display = 'flex';
-    document.getElementById('pilotAvSlot').textContent = pilotAvatar;
+    document.getElementById('pilotAvSlot').innerHTML = pilotPhotoData ? '<img src="'+pilotPhotoData+'" alt="">' : pilotAvatar;
     document.getElementById('pilotNameSlot').textContent = pilotName;
     initAudio();
     playUIClick();
@@ -1324,37 +1423,56 @@
     document.getElementById('nameInput').value = '';
     document.querySelectorAll('.avatar-opt').forEach((n,i)=> n.classList.toggle('selected', i===0));
     pilotAvatar = AVATARS[0];
+    pilotPhotoData = '';
+    document.getElementById('startPhotoPick').innerHTML = '<span class="cam">📸</span><span>Take photo</span>';
+    const photoNote=document.getElementById('photoNote');photoNote.textContent='Photo appears on the winner card and leaderboard';photoNote.classList.remove('error');
     document.getElementById('endScreen').classList.add('hidden');
     document.getElementById('startScreen').classList.remove('hidden');
     document.getElementById('pilotChip').style.display = 'none';
     document.getElementById('nameInput').focus();
   }
 
-  document.getElementById('startBtn').addEventListener('click', ()=>{ playUIClick(); launchCountdown(); });
+  document.getElementById('startBtn').addEventListener('click', ()=>{
+    playUIClick();
+    if(!pilotPhotoData){
+      const note=document.getElementById('photoNote');note.textContent='Please take or select a player photo first';note.classList.add('error');
+      document.getElementById('startPhotoPick').animate([{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(0)'}],{duration:260});
+      document.getElementById('startPhotoInput').click();
+      return;
+    }
+    launchCountdown();
+  });
   document.getElementById('retryBtn').addEventListener('click', ()=>{ playUIClick(); startGame(); });
   document.getElementById('newPilotBtn').addEventListener('click', ()=>{ playUIClick(); newPilot(); });
   document.getElementById('nameInput').addEventListener('keypress', playUIType);
   document.getElementById('muteBtn').addEventListener('click', toggleSoundMute);
 
   // Photo capture
-  const photoCaptureBtn = document.getElementById('photoCaptureBtn');
-  const photoCaptureInput = document.getElementById('photoCaptureInput');
   const pilotPhotoFrame = document.getElementById('pilotPhotoFrame');
 
-  photoCaptureBtn.addEventListener('click', ()=>{ photoCaptureInput.click(); });
-  photoCaptureInput.addEventListener('change', (e)=>{
-    const file = e.target.files[0];
-    if(file){
-      const reader = new FileReader();
-      reader.onload = (event)=>{
-        const img = document.createElement('img');
-        img.src = event.target.result;
-        pilotPhotoFrame.innerHTML = '';
-        pilotPhotoFrame.classList.remove('empty');
-        pilotPhotoFrame.appendChild(img);
+  function compressPhoto(file, callback){
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const size=180, c=document.createElement('canvas'); c.width=size; c.height=size;
+        const cc=c.getContext('2d');
+        const scale=Math.max(size/img.width,size/img.height), w=img.width*scale, h=img.height*scale;
+        cc.drawImage(img,(size-w)/2,(size-h)/2,w,h);
+        callback(c.toDataURL('image/jpeg',.72));
       };
-      reader.readAsDataURL(file);
-    }
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  document.getElementById('startPhotoInput').addEventListener('change',e=>{
+    const file=e.target.files[0]; if(!file) return;
+    compressPhoto(file,data=>{
+      pilotPhotoData=data;
+      document.getElementById('startPhotoPick').innerHTML='<img src="'+data+'" alt="Player photo">';
+      const note=document.getElementById('photoNote');note.textContent='Player photo ready ✓';note.classList.remove('error');
+    });
   });
 
   reset();
